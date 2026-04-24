@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinItDaily — Free Sweepstakes & Giveaways</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F5C842;
+    --gold-dark: #C9A020;
+    --green: #1A7A4A;
+    --green-light: #22A862;
+    --dark: #0A0F0D;
+    --dark2: #111815;
+    --dark3: #182018;
+    --card-bg: #141A15;
+    --text: #E8EDE9;
+    --muted: #7A8C7D;
+    --border: rgba(245,200,66,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 5%;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(10,15,13,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--text); }
+
+  nav ul {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--dark) !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding: 90px 5% 80px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26,122,74,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 100%, rgba(245,200,66,0.08) 0%, transparent 60%);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(245,200,66,0.1);
+    border: 1px solid rgba(245,200,66,0.3);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 9vw, 110px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    animation: fadeDown 0.7s 0.1s ease both;
+    position: relative;
+  }
+
+  .hero h1 em {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero p {
+    margin: 24px auto 40px;
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.6;
+    font-weight: 300;
+    animation: fadeDown 0.7s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    animation: fadeDown 0.7s 0.3s ease both;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--green);
+    padding: 10px 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .ticker {
+    display: flex;
+    gap: 60px;
+    animation: ticker 25s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  .ticker span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .ticker span::before {
+    content: '★';
+    margin-right: 12px;
+    color: var(--gold);
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 64px 5%;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .section-title span {
+    color: var(--gold);
+  }
+
+  .see-all {
+    font-size: 13px;
+    color: var(--green-light);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(34,168,98,0.3);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+
+  .see-all:hover { color: var(--gold); border-color: rgba(245,200,66,0.3); }
+
+  /* ── CATEGORIES ── */
+  .cats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 28px 5%;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cat-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .cat-pill:hover, .cat-pill.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(245,200,66,0.06);
+  }
+
+  .cat-pill .icon { font-size: 16px; }
+
+  /* ── OFFER GRID ── */
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .offer-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    position: relative;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .offer-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245,200,66,0.35);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,200,66,0.1);
+  }
+
+  .offer-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--dark3), var(--dark2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .offer-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(10,15,13,0.7) 100%);
+  }
+
+  .offer-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    z-index: 1;
+  }
+
+  .offer-badge.hot { background: #FF4D4D; color: white; }
+  .offer-badge.new { background: var(--green-light); color: white; }
+
+  .offer-body {
+    padding: 18px 20px 20px;
+  }
+
+  .offer-category {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 8px;
+  }
+
+  .offer-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .offer-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+
+  .offer-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .offer-elig {
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .offer-payout {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .offer-payout span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0;
+    margin-left: 2px;
+  }
+
+  .enter-btn {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .enter-btn:hover {
+    background: #FFD84D;
+    transform: scale(1.02);
+  }
+
+  .enter-btn:active { transform: scale(0.98); }
+
+  /* ── FEATURED BANNER ── */
+  .featured-banner {
+    margin: 0 5% 48px;
+    background: linear-gradient(135deg, var(--green) 0%, #0D4A2A 100%);
+    border-radius: 16px;
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .featured-banner::before {
+    content: '💰';
+    position: absolute;
+    right: 160px;
+    top: -20px;
+    font-size: 140px;
+    opacity: 0.1;
+    transform: rotate(-15deg);
+  }
+
+  .featured-banner-text h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 1px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .featured-banner-text p {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 400px;
+  }
+
+  .featured-banner-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .featured-banner-btn:hover { background: #FFD84D; transform: scale(1.03); }
+
+  /* ── HOW IT WORKS ── */
+  .how-it-works {
+    background: var(--dark2);
+    padding: 64px 5%;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .how-it-works .section-title { margin-bottom: 40px; text-align: center; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .step {
+    text-align: center;
+  }
+
+  .step-num {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(245,200,66,0.1);
+    border: 1px solid rgba(245,200,66,0.3);
+    color: var(--gold);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+
+  .step h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .step p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── EMAIL CAPTURE ── */
+  .email-section {
+    padding: 64px 5%;
+    text-align: center;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(26,122,74,0.12) 0%, transparent 70%);
+  }
+
+  .email-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .email-section h2 em {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .email-section p {
+    color: var(--muted);
+    margin-bottom: 32px;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .email-form {
+    display: flex;
+    gap: 12px;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .email-form input {
+    flex: 1;
+    padding: 14px 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-form input:focus { border-color: rgba(245,200,66,0.4); }
+  .email-form input::placeholder { color: var(--muted); }
+
+  .email-form button {
+    padding: 14px 24px;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .email-form button:hover { background: #FFD84D; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark2);
+    border-top: 1px solid var(--border);
+    padding: 48px 5% 32px;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand .logo { font-size: 24px; display: block; margin-bottom: 12px; }
+
+  .footer-brand p {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 240px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .footer-links h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .footer-links ul { list-style: none; }
+  .footer-links ul li { margin-bottom: 10px; }
+  .footer-links ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .footer-links ul a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    .hero-stats { gap: 28px; }
+    .featured-banner { flex-direction: column; gap: 24px; text-align: center; padding: 32px 24px; }
+    .featured-banner::before { display: none; }
+    .email-form { flex-direction: column; }
+    .footer-top { flex-direction: column; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">WinIt<span>Daily</span></a>
+  <ul>
+    <li><a href="#cash">Cash & Gifts</a></li>
+    <li><a href="#tech">Tech</a></li>
+    <li><a href="#gaming">Gaming</a></li>
+    <li><a href="#samples">Free Samples</a></li>
+    <li><a href="#newsletter" class="nav-cta">Get Alerts</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">🔥 Updated Daily — 100% Free to Enter</div>
+  <h1>Win <em>Real</em><br>Prizes &<br>Cash</h1>
+  <p>The best free sweepstakes and giveaways, all in one place. No credit card. No catch. Just enter and win.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">47+</div>
+      <div class="stat-label">Live Offers</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$25K</div>
+      <div class="stat-label">In Prizes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">18K</div>
+      <div class="stat-label">Winners</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>$750 Cash App — Enter Now</span>
+    <span>Win $50,000 Cash!</span>
+    <span>Free iPhone 17</span>
+    <span>$1,000 Amazon Gift Card</span>
+    <span>$1,000 Kroger vs Aldi Voucher</span>
+    <span>$500 Amazon Gift Card</span>
+    <span>$100 PayPal Gift Card</span>
+    <span>Disney+ & Hulu Bundle</span>
+    <span>$1,000 Mystery Gift Box</span>
+    <span>Adidas Gift Card Giveaway</span>
+    <span>$500 Walmart Gift Card</span>
+    <span>$100 Chick-fil-A Gift Card</span>
+    <span>$750 Cash App — Enter Now</span>
+    <span>Win $50,000 Cash!</span>
+    <span>Free iPhone 17</span>
+    <span>$1,000 Amazon Gift Card</span>
+    <span>$1,000 Kroger vs Aldi Voucher</span>
+    <span>$500 Amazon Gift Card</span>
+    <span>$100 PayPal Gift Card</span>
+    <span>Disney+ & Hulu Bundle</span>
+    <span>$1,000 Mystery Gift Box</span>
+    <span>Adidas Gift Card Giveaway</span>
+    <span>$500 Walmart Gift Card</span>
+    <span>$100 Chick-fil-A Gift Card</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="cats">
+  <a href="#" class="cat-pill active"><span class="icon">🏆</span> All Offers</a>
+  <a href="#cash" class="cat-pill"><span class="icon">💵</span> Cash & Gift Cards</a>
+  <a href="#tech" class="cat-pill"><span class="icon">📱</span> Tech & Gadgets</a>
+  <a href="#gaming" class="cat-pill"><span class="icon">🎮</span> Gaming Prizes</a>
+  <a href="#samples" class="cat-pill"><span class="icon">🛍️</span> Free Samples</a>
+  <a href="#" class="cat-pill"><span class="icon">✈️</span> Travel</a>
+</div>
+
+<!-- FEATURED BANNER -->
+<div class="featured-banner" style="margin-top: 48px;">
+  <div class="featured-banner-text">
+    <h2>🏆 #1 Pick This Week</h2>
+    <p>Win $1,000 Mystery Gift Box — highest paying offer right now. Just submit your email. US residents 18+ only. Uncapped!</p>
+  </div>
+  <a href="https://checkmyapp.store/sl/zynx8" class="featured-banner-btn">Claim $1,000 Box Now →</a>
+</div>
+
+<!-- NEW THIS WEEK -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">🔥 Top <span>Offers</span></h2>
+    <a href="#" class="see-all">View all →</a>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" style="animation-delay: 0.05s">
+      <div class="offer-img">🎁</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">🎁 Mystery Prizes</div>
+        <h3 class="offer-title">Get $1,000 Mystery Gift Box!</h3>
+        <p class="offer-desc">What's inside? Could be cash, electronics, gift cards or more. Submit your email to enter. Uncapped entries!</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$1,000 <span>value</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/zynx8" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.1s">
+      <div class="offer-img">💸</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">Win a $100 PayPal Gift Card!</h3>
+        <p class="offer-desc">Get $100 sent straight to your PayPal. Just submit your email — takes under 60 seconds to enter.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$100 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/853y6" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.15s">
+      <div class="offer-img">💰</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">Get $750 to Your CashApp!</h3>
+        <p class="offer-desc">$750 deposited straight to your Cash App account. Email submit only — takes 30 seconds. Uncapped!</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$750 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/qznw2" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CASH & GIFT CARDS -->
+<section class="section" id="cash" style="padding-top: 0">
+  <div class="section-header">
+    <h2 class="section-title">💵 Cash & <span>Gift Cards</span></h2>
+    <a href="#" class="see-all">View all →</a>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" style="animation-delay: 0.05s">
+      <div class="offer-img">💰</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">Win $50,000 Cash!</h3>
+        <p class="offer-desc">The biggest prize on the site — $50,000 cash. Submit your email for a chance to win. Don't miss this one.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$50,000 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/mek21" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.1s">
+      <div class="offer-img">📦</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">Win Amazon $1,000 Gift Card!</h3>
+        <p class="offer-desc">Shop anything on Amazon with a $1,000 gift card. Just submit your email — takes under a minute.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$1,000 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/5emj6" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.15s">
+      <div class="offer-img">🛒</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">$500 Amazon Gift Card — Enter NOW!</h3>
+        <p class="offer-desc">Don't miss out — $500 on the line for an Amazon gift card. Email submit, super fast entry.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$500 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/jxk3q" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.2s">
+      <div class="offer-img">🏪</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">$1,000 Kroger vs Aldi Voucher!</h3>
+        <p class="offer-desc">Win a $1,000 grocery voucher — who wins the showdown? Enter your email to find out and claim yours.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$1,000 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/egk81" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.25s">
+      <div class="offer-img">🛍️</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">$500 Walmart Gift Card!</h3>
+        <p class="offer-desc">Don't miss out — $500 on the line for a Walmart gift card. Spend it on groceries, electronics, anything.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$500 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.space/sl/3186p" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.3s">
+      <div class="offer-img">🍗</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">💵 Cash & Gift Cards</div>
+        <h3 class="offer-title">$100 Chick-fil-A Gift Card!</h3>
+        <p class="offer-desc">Free food on us! Win a $100 Chick-fil-A gift card. Email submit only — super quick entry.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$100 <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.space/sl/65jvk" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TECH -->
+<section class="section" id="tech" style="background: var(--dark2); padding-top: 64px;">
+  <div class="section-header">
+    <h2 class="section-title">📱 Tech & <span>Gadgets</span></h2>
+    <a href="#" class="see-all">View all →</a>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" style="animation-delay: 0.05s">
+      <div class="offer-img">📱</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">📱 Tech & Gadgets</div>
+        <h3 class="offer-title">Win a New iPhone 17!</h3>
+        <p class="offer-desc">Brand new iPhone 17 — unlocked. Just submit your email for a chance to win before this closes.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$999+ <span>value</span></div>
+        </div>
+        <a href="https://authenticateapp.online/sl/o1kr9" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.1s">
+      <div class="offer-img">🎵</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">📱 Tech & Gadgets</div>
+        <h3 class="offer-title">Unlock Spotify in Opera!</h3>
+        <p class="offer-desc">Get free Spotify access through the Opera browser. Quick install — takes under 2 minutes.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · All ages</span>
+          <div class="offer-payout">Free <span>access</span></div>
+        </div>
+        <a href="https://authenticateapp.online/sl/ppnwj" class="enter-btn">Get It Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.15s">
+      <div class="offer-img">🌐</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">📱 Tech & Gadgets</div>
+        <h3 class="offer-title">Quick Install: Opera GX</h3>
+        <p class="offer-desc">The ultimate gaming browser — built-in VPN, ad blocker, and RAM limiter. Free install, takes seconds.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · All ages</span>
+          <div class="offer-payout">Free <span>install</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/v1nwo" class="enter-btn">Install Free</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GAMING -->
+<section class="section" id="gaming">
+  <div class="section-header">
+    <h2 class="section-title">🎮 Gaming & <span>Entertainment</span></h2>
+    <a href="#" class="see-all">View all →</a>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" style="animation-delay: 0.05s">
+      <div class="offer-img">🎬</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">🎮 Entertainment</div>
+        <h3 class="offer-title">Disney+ & Hulu Bundle</h3>
+        <p class="offer-desc">Get access to Disney+ and Hulu together. Stream thousands of movies and shows. Quick lead gen — enter now.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">Free <span>bundle</span></div>
+        </div>
+        <a href="https://appchecker.space/sl/rvdwd" class="enter-btn">Claim Bundle — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.1s">
+      <div class="offer-img">👟</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">🎮 Gaming & Prizes</div>
+        <h3 class="offer-title">Win an Adidas Gift Card!</h3>
+        <p class="offer-desc">Try your luck and win an Adidas gift card — shoes, clothes, gear. Email submit, takes 30 seconds.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">Gift Card <span>prize</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/5empp" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.15s">
+      <div class="offer-img">🎰</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">🎮 Gaming</div>
+        <h3 class="offer-title">Slotswise — Win Real Rewards</h3>
+        <p class="offer-desc">Play slots and earn real rewards. Sign up for free and start winning today — US players welcome.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">Real <span>rewards</span></div>
+        </div>
+        <a href="https://appchecker.space/sl/wrnwe" class="enter-btn">Play Free</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FREE SAMPLES / SURVEYS -->
+<section class="section" id="samples" style="background: var(--dark2); padding-top: 64px;">
+  <div class="section-header">
+    <h2 class="section-title">📋 Surveys & <span>Easy Wins</span></h2>
+    <a href="#" class="see-all">View all →</a>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" style="animation-delay: 0.05s">
+      <div class="offer-img">📝</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">📋 Surveys</div>
+        <h3 class="offer-title">Easy Rewards from Surveys!</h3>
+        <p class="offer-desc">Answer a few simple questions and earn rewards. Takes just minutes — email submit to get started.</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">Rewards <span>earned</span></div>
+        </div>
+        <a href="https://authenticateapp.online/sl/x6n1l" class="enter-btn">Start Earning</a>
+      </div>
+    </div>
+
+    <div class="offer-card" style="animation-delay: 0.15s">
+      <div class="offer-img">🎁</div>
+      
+      <div class="offer-body">
+        <div class="offer-category">🎁 Mystery Prizes</div>
+        <h3 class="offer-title">$1,000 Mystery Gift Box!</h3>
+        <p class="offer-desc">What's hiding inside? Electronics, cash, gift cards — it's a surprise. Uncapped entries, don't wait!</p>
+        <div class="offer-meta">
+          <span class="offer-elig">🇺🇸 US Only · 18+</span>
+          <div class="offer-payout">$1,000 <span>value</span></div>
+        </div>
+        <a href="https://checkmyapp.store/sl/zynx8" class="enter-btn">Enter Now — Free</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works">
+  <h2 class="section-title">How It <span style="color:var(--gold)">Works</span></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Browse Offers</h3>
+      <p>Find a sweepstakes or giveaway that catches your eye. New offers are added every day.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Click Enter</h3>
+      <p>Hit the "Enter Now" button. You'll be taken to the official entry page for that offer.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Submit Your Info</h3>
+      <p>Most offers just require your email or zip code. It takes less than 60 seconds.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Win Prizes</h3>
+      <p>Winners are notified by email. The more offers you enter, the better your chances!</p>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL CAPTURE -->
+<section class="email-section" id="newsletter">
+  <h2>Get Daily <em>Giveaway</em> Alerts</h2>
+  <p>New sweepstakes added every day. Be the first to know — before spots run out.</p>
+  <div class="email-form">
+    <input type="email" placeholder="Enter your email address...">
+    <button>Subscribe Free</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo">WinIt<span>Daily</span></a>
+      <p>The best free sweepstakes and giveaways updated daily. 100% free to enter.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="#cash">Cash & Gift Cards</a></li>
+        <li><a href="#tech">Tech & Gadgets</a></li>
+        <li><a href="#gaming">Gaming Prizes</a></li>
+        <li><a href="#samples">Free Samples</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">How It Works</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>⚠️ <strong>Affiliate Disclosure:</strong> WinItDaily.com contains affiliate links. We may earn a commission when you complete an offer at no cost to you. Sweepstakes and giveaways are operated by third-party advertisers. Please read all terms and conditions on the offer page before entering. Must be 18 years or older and a US resident to qualify for most offers. Winning is not guaranteed. This site is not affiliated with Cash App, Amazon, Apple, Sony, Microsoft, or any other brand mentioned.</p>
+    <p style="margin-top: 12px; color: #4A5C4D;">© 2026 WinItDaily. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // Animate cards on scroll
+  const cards = document.querySelectorAll('.offer-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(24px)';
+    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(card);
+  });
+
+  // Category pill filter
+  document.querySelectorAll('.cat-pill').forEach(pill => {
+    pill.addEventListener('click', function(e) {
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Email form
+  document.querySelector('.email-form button').addEventListener('click', function() {
+    const input = document.querySelector('.email-form input');
+    if (input.value.includes('@')) {
+      input.value = '';
+      input.placeholder = '✅ You\'re subscribed!';
+      this.textContent = 'Done!';
+      this.style.background = 'var(--green-light)';
+    }
+  });
+</script>
+
+</body>
+</html>
