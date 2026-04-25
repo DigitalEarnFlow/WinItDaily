@@ -35,8 +35,8 @@
     position: fixed;
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none !important;
+    z-index: -1;
     opacity: 0.4;
   }
 
@@ -410,6 +410,8 @@
     text-align: center;
     text-decoration: none;
     transition: background 0.2s, transform 0.15s;
+    position: relative;
+    z-index: 999;
   }
 
   .enter-btn:hover {
@@ -470,6 +472,9 @@
     white-space: nowrap;
     flex-shrink: 0;
     transition: background 0.2s, transform 0.15s;
+    position: relative;
+    z-index: 999;
+    cursor: pointer;
   }
 
   .featured-banner-btn:hover { background: #FFD84D; transform: scale(1.03); }
@@ -668,7 +673,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">WinIt<span>Daily</span></a>
+  <a href="index.html" class="logo">WinIt<span>Daily</span></a>
   <ul>
     <li><a href="#cash">Cash & Gifts</a></li>
     <li><a href="#tech">Tech</a></li>
@@ -732,12 +737,12 @@
 
 <!-- CATEGORIES -->
 <div class="cats">
-  <a href="#" class="cat-pill active"><span class="icon">🏆</span> All Offers</a>
+  <a href="index.html" class="cat-pill active"><span class="icon">🏆</span> All Offers</a>
   <a href="#cash" class="cat-pill"><span class="icon">💵</span> Cash & Gift Cards</a>
   <a href="#tech" class="cat-pill"><span class="icon">📱</span> Tech & Gadgets</a>
   <a href="#gaming" class="cat-pill"><span class="icon">🎮</span> Gaming Prizes</a>
   <a href="#samples" class="cat-pill"><span class="icon">🛍️</span> Free Samples</a>
-  <a href="#" class="cat-pill"><span class="icon">✈️</span> Travel</a>
+  <a href="index.html" class="cat-pill"><span class="icon">✈️</span> Travel</a>
 </div>
 
 <!-- FEATURED BANNER -->
@@ -753,7 +758,7 @@
 <section class="section">
   <div class="section-header">
     <h2 class="section-title">🔥 Top <span>Offers</span></h2>
-    <a href="#" class="see-all">View all →</a>
+    <a href="index.html" class="see-all">View all →</a>
   </div>
   <div class="offers-grid">
 
@@ -809,7 +814,7 @@
 <section class="section" id="cash" style="padding-top: 0">
   <div class="section-header">
     <h2 class="section-title">💵 Cash & <span>Gift Cards</span></h2>
-    <a href="#" class="see-all">View all →</a>
+    <a href="index.html" class="see-all">View all →</a>
   </div>
   <div class="offers-grid">
 
@@ -910,7 +915,7 @@
 <section class="section" id="tech" style="background: var(--dark2); padding-top: 64px;">
   <div class="section-header">
     <h2 class="section-title">📱 Tech & <span>Gadgets</span></h2>
-    <a href="#" class="see-all">View all →</a>
+    <a href="index.html" class="see-all">View all →</a>
   </div>
   <div class="offers-grid">
 
@@ -966,7 +971,7 @@
 <section class="section" id="gaming">
   <div class="section-header">
     <h2 class="section-title">🎮 Gaming & <span>Entertainment</span></h2>
-    <a href="#" class="see-all">View all →</a>
+    <a href="index.html" class="see-all">View all →</a>
   </div>
   <div class="offers-grid">
 
@@ -1022,7 +1027,7 @@
 <section class="section" id="samples" style="background: var(--dark2); padding-top: 64px;">
   <div class="section-header">
     <h2 class="section-title">📋 Surveys & <span>Easy Wins</span></h2>
-    <a href="#" class="see-all">View all →</a>
+    <a href="index.html" class="see-all">View all →</a>
   </div>
   <div class="offers-grid">
 
@@ -1060,7 +1065,7 @@
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="how-it-works">
+<section class="how-it-works" id="how-it-works">
   <h2 class="section-title">How It <span style="color:var(--gold)">Works</span></h2>
   <div class="steps">
     <div class="step">
@@ -1100,7 +1105,7 @@
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <a href="#" class="logo">WinIt<span>Daily</span></a>
+      <a href="index.html" class="logo">WinIt<span>Daily</span></a>
       <p>The best free sweepstakes and giveaways updated daily. 100% free to enter.</p>
     </div>
     <div class="footer-links">
@@ -1115,10 +1120,10 @@
     <div class="footer-links">
       <h4>Info</h4>
       <ul>
-        <li><a href="#">About</a></li>
-        <li><a href="#">How It Works</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
       </ul>
     </div>
   </div>
@@ -1158,11 +1163,20 @@
   // Email form
   document.querySelector('.email-form button').addEventListener('click', function() {
     const input = document.querySelector('.email-form input');
-    if (input.value.includes('@')) {
+    const email = input.value.trim();
+    if (email.includes('@')) {
+      window.open('http://eepurl.com/bvayNM6a_8M', '_blank');
       input.value = '';
-      input.placeholder = '✅ You\'re subscribed!';
+      input.placeholder = '✅ Check your email!';
       this.textContent = 'Done!';
       this.style.background = 'var(--green-light)';
+    } else {
+      input.style.borderColor = 'red';
+      input.placeholder = '⚠️ Please enter a valid email!';
+      setTimeout(() => {
+        input.style.borderColor = '';
+        input.placeholder = 'Enter your email address...';
+      }, 3000);
     }
   });
 </script>
